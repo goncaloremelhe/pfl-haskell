@@ -1,4 +1,4 @@
---import qualified Data.List
+import qualified Data.List
 --import qualified Data.Array
 --import qualified Data.Bits
 
@@ -13,13 +13,14 @@ type Distance = Int
 type RoadMap = [(City,City,Distance)]
 
 cities :: RoadMap -> [City]
-cities = undefined -- modifiy this line to implement the solution, for each exercise not solved, leave the function definition like this
+cities = undefined
 
 areAdjacent :: RoadMap -> City -> City -> Bool
 areAdjacent = undefined
 
 distance :: RoadMap -> City -> City -> Maybe Distance
 distance = undefined
+    
 
 adjacent :: RoadMap -> City -> [(City,Distance)]
 adjacent = undefined
@@ -33,6 +34,7 @@ rome = undefined
 isStronglyConnected :: RoadMap -> Bool
 isStronglyConnected = undefined
 
+--Dijkstra
 shortestPath :: RoadMap -> City -> City -> [Path]
 shortestPath = undefined
 
@@ -51,3 +53,29 @@ gTest2 = [("0","1",10),("0","2",15),("0","3",20),("1","2",35),("1","3",25),("2",
 
 gTest3 :: RoadMap -- unconnected graph
 gTest3 = [("0","1",4),("2","3",2)]
+
+
+
+
+-- Versão flop
+cities' :: RoadMap -> [City]
+cities' r = Data.List.nub ( concat ( [ [x,y] | (x, y, _ ) <- r]) )
+
+areAdjacent' :: RoadMap -> City -> City -> Bool
+areAdjacent' [] _ _ = False
+areAdjacent' ((a,b,c):r1) c1 c2 = (a == c1 && b == c2) || (a == c2 && b == c1) || areAdjacent' r1 c1 c2
+
+distance' :: RoadMap -> City -> City -> Maybe Distance
+distance' [] _ _ = Nothing
+distance' ((a,b,c):r1) c1 c2
+    | a == c1 && b == c2 = Just c
+    | a == c2 && b == c1 = Just c
+    | otherwise = distance' r1 c1 c2
+    
+
+adjacent' :: RoadMap -> City -> [(City,Distance)]
+adjacent' [] _ = []
+adjacent' ((a,b,c):r1) c1
+    | c1 == a = (b,c): adjacent' r1 c1
+    | c1 == b = (a,c): adjacent' r1 c1
+    | otherwise = adjacent' r1 c1
