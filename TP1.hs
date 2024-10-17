@@ -15,14 +15,14 @@ type RoadMap = [(City,City,Distance)]
 cities :: RoadMap -> [City] --Prints a list of all the cities, duplicates are removed using nub
 cities r = Data.List.nub ( concat ( [ [x,y] | (x, y, _ ) <- r]) )
 
-areAdjacent :: RoadMap -> City -> City -> Bool --Returns True if two cities have an edge connecting them, False otherwise
+areAdjacent :: RoadMap -> City -> City -> Bool --Returns True if two cities have an edge connecting them, False otherwise. (c1,c2,d) -> each tuple in the roadmap; ci1 and ci2 -> given cities
 areAdjacent [] _ _ = False
 areAdjacent ((c1,c2,d):t) ci1 ci2
     | ci1==c1 && ci2==c2 = True
     | ci1==c2 && ci2==c1 = True
     | otherwise = areAdjacent t ci1 ci2
 
-distance :: RoadMap -> City -> City -> Maybe Distance  --Returns Just distance between two cities if there is an edge connecting them and Nothing otherwise
+distance :: RoadMap -> City -> City -> Maybe Distance  --Returns Just distance between two cities if there is an edge connecting them and Nothing otherwise. (c1,c2,d) -> each tuple in the roadmap; ci1 and ci2 -> given cities
 distance [] _ _ = Nothing
 distance ((c1,c2,d):t) ci1 ci2
     | ci1==c1 && ci2==c2 = Just d
@@ -30,15 +30,20 @@ distance ((c1,c2,d):t) ci1 ci2
     | otherwise = distance t ci1 ci2
 
 
-adjacent :: RoadMap -> City -> [(City,Distance)] --Returns a list of tuples with every city adjacent to a given city and the distance between them
+adjacent :: RoadMap -> City -> [(City,Distance)] --Returns a list of tuples with every city adjacent to a given city and the distance between them. (c1,c2,d) -> each tuple in the roadmap; ci1 -> given city
 adjacent [] _ = []
 adjacent ((c1,c2,d):t) ci1
     | ci1 == c1 = (c2,d) : adjacent t ci1
     | ci1 == c2 = (c1,d) : adjacent t ci1
     | otherwise = adjacent t ci1
 
-pathDistance :: RoadMap -> Path -> Maybe Distance
-pathDistance = undefined
+pathDistance :: RoadMap -> Path -> Maybe Distance --Returns the distance between all the cities in a path if they are consecutive
+pathDistance _ [] = Just 0
+pathDistance _ [_] = Just 0
+pathDistance roadMap (ci1:ci2:r)= do
+    d <- distance roadMap ci1 ci2
+    rest <- pathDistance roadMap (ci2:r)
+    return (d + rest)
 
 rome :: RoadMap -> [City]
 rome = undefined
