@@ -37,7 +37,7 @@ adjacent ((c1,c2,d):t) ci1
     | ci1 == c2 = (c1,d) : adjacent t ci1
     | otherwise = adjacent t ci1
 
-pathDistance :: RoadMap -> Path -> Maybe Distance --Returns the distance between all the cities in a path if they are consecutive
+pathDistance :: RoadMap -> Path -> Maybe Distance --Returns the distance between all the cities in a path if they are consecutive. (ci1:ci2:r) <- ci1 is the current city in the path, ci2 is the nxt city, r is the tail of the path
 pathDistance _ [] = Just 0
 pathDistance _ [_] = Just 0
 pathDistance roadMap (ci1:ci2:r)= do
@@ -45,8 +45,23 @@ pathDistance roadMap (ci1:ci2:r)= do
     rest <- pathDistance roadMap (ci2:r)
     return (d + rest)
 
-rome :: RoadMap -> [City]
-rome = undefined
+---------------------------aux function for rome
+--takes list of unique cities and takes the length of the adjacent vertices of each vertice and creates a list with the format (city,number of adjacent vertices)
+
+verticeDegrees :: RoadMap -> [(City, Int)]
+verticeDegrees roadMap =
+    let
+    uniqueCities = cities roadMap
+    degree v = length (adjacent roadMap v)
+    in [(v, degree v) | v <- uniqueCities]
+---------------------------------------------
+
+rome :: RoadMap -> [City] --takes list of vertice degrees built in auxiliary function, calculates the maximum degree and outputs the cities with that degree
+rome roadMap =
+    let
+    degreeslist = verticeDegrees roadMap
+    maxDegree = maximum[degree | (city,degree)<-degreeslist]
+    in[city|(city,degree)<-degreeslist, degree ==  maxDegree]
 
 isStronglyConnected :: RoadMap -> Bool
 isStronglyConnected = undefined
