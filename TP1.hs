@@ -61,10 +61,23 @@ rome roadMap =
     let
     degreeslist = verticeDegrees roadMap
     maxDegree = maximum[degree | (city,degree)<-degreeslist]
-    in[city|(city,degree)<-degreeslist, degree ==  maxDegree]
+    in[city | (city,degree)<-degreeslist, degree ==  maxDegree]
+
+------------------------------aux function for isStronglyConnected
+dfs :: RoadMap -> [City] -> [City] -> [City] --depth first search 
+dfs _ visited [] = reverse visited
+dfs roadMap visited (x:xs)
+    | elem x visited = dfs roadMap visited xs -- if x was already visited, dont add it do the visited list, continue searching
+    | otherwise      = dfs roadMap (x:visited) (adjacentCities ++ xs) --x wasnt visited, so we add it to the visited list and continue
+    where adjacentCities = [c1 | (c1, _) <- adjacent roadMap x]
+---------------------------------------------
 
 isStronglyConnected :: RoadMap -> Bool
-isStronglyConnected = undefined
+isStronglyConnected roadMap =
+    let
+    allCities = cities roadMap
+    dfsing = dfs roadMap [] [(head allCities)]
+    in length dfsing == length allCities
 
 --Dijkstra
 shortestPath :: RoadMap -> City -> City -> [Path]
