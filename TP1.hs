@@ -12,18 +12,30 @@ type Distance = Int
 
 type RoadMap = [(City,City,Distance)]
 
-cities :: RoadMap -> [City]
-cities = undefined
+cities :: RoadMap -> [City] --Prints a list of all the cities, duplicates are removed using nub
+cities r = Data.List.nub ( concat ( [ [x,y] | (x, y, _ ) <- r]) )
 
-areAdjacent :: RoadMap -> City -> City -> Bool
-areAdjacent = undefined
+areAdjacent :: RoadMap -> City -> City -> Bool --Returns True if two cities have an edge connecting them, False otherwise
+areAdjacent [] _ _ = False
+areAdjacent ((c1,c2,d):t) ci1 ci2
+    | ci1==c1 && ci2==c2 = True
+    | ci1==c2 && ci2==c1 = True
+    | otherwise = areAdjacent t ci1 ci2
 
-distance :: RoadMap -> City -> City -> Maybe Distance
-distance = undefined
-    
+distance :: RoadMap -> City -> City -> Maybe Distance  --Returns Just distance between two cities if there is an edge connecting them and Nothing otherwise
+distance [] _ _ = Nothing
+distance ((c1,c2,d):t) ci1 ci2
+    | ci1==c1 && ci2==c2 = Just d
+    | ci1==c2 && ci2==c1 = Just d
+    | otherwise = distance t ci1 ci2
 
-adjacent :: RoadMap -> City -> [(City,Distance)]
-adjacent = undefined
+
+adjacent :: RoadMap -> City -> [(City,Distance)] --Returns a list of tuples with every city adjacent to a given city and the distance between them
+adjacent [] _ = []
+adjacent ((c1,c2,d):t) ci1
+    | ci1 == c1 = (c2,d) : adjacent t ci1
+    | ci1 == c2 = (c1,d) : adjacent t ci1
+    | otherwise = adjacent t ci1
 
 pathDistance :: RoadMap -> Path -> Maybe Distance
 pathDistance = undefined
