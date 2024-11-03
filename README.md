@@ -43,7 +43,9 @@ If the result is indeed already stored, it is returned, if not, the function com
 This function is used to compare two potential results, handling both Nothing and Just values in a way that prioritizes valid paths (Just values) over non-existent paths (Nothing values). It enables the tsp function to easily find the shortest valid path from a list of possible paths. It has 3 use cases:
 
 1.When both results are Nothing, they are considered equal, as neither represents a valid path.
+
 2.If one of the results is Nothing and the other is Just, the result with Just is considered smaller.
+
 3.When both results are Just values, it directly compares their distances (c1 and c2).
 
 
