@@ -31,6 +31,13 @@ Finally, with all these auxiliary functions defined the shortestPath function ca
 
 ## travelSales function
 
+### Auxiliary function 1: tsp
+This function uses dynamic programming and bit masking to solve the travelling salesperson problem, it is the body of the travelSales function and takes the following parameters: a **newRoadMap**, the number of cities, a bitmask marking the represented cities, the current position of the TSP traversal and a dynamic table that stores previously calculated optimal paths.
+
+Firstly, the base case checks if all cities were visited, if so, the function returns the current path, keeping in mind that we need to return to the starting city at the end
+
+### Result
+
 
 
 
