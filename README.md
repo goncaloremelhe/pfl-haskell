@@ -1,8 +1,8 @@
 # PFL_24_T03_G01 - Project 1
 
 ## Group Members
-- Gonçalo Remelhe, 202205318 (60%) Implemented both the shortestPath and the travelSales function.
-- Joana Noites, 202206284 (40%) Implemented the cities, areAdjacent, distance, adjacent, pathDistance, rome and isStronglyConnected functions.
+- Gonçalo Remelhe, 202205318 (55%) Implemented both the shortestPath and the travelSales function.
+- Joana Noites, 202206284 (45%) Implemented the cities, areAdjacent, distance, adjacent, pathDistance, rome and isStronglyConnected functions.
 
 ## shortestPath function
 To compute the shortest path between 2 given cities, 3 auxiliary functions were used: dijsktra, adjacentArray and dfsAllShortestPaths.
